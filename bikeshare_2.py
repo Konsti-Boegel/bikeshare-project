@@ -33,11 +33,18 @@ def get_filters():
         else:
             print('Invalid answer. Please try again.')
 
-
-
-
     # get user input for month (all, january, february, ... , june)
 
+    valid = True
+
+    while valid:
+        month = input('Which month do you want to filter? All, January, February, March, April, May or June.\n').lower()
+        if month in months:
+            valid = False
+            print(month)
+            break
+        else:
+            print('Invalid answer. Please try again.')
 
     # get user input for day of week (all, monday, tuesday, ... sunday)
 
