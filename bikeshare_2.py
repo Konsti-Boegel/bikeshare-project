@@ -6,6 +6,10 @@ CITY_DATA = { 'chicago': 'chicago.csv',
               'new york city': 'new_york_city.csv',
               'washington': 'washington.csv' }
 
+cities = ['chicago', 'new york city', 'washington']
+months = ['all', 'january', 'february', 'march', 'april', 'may', 'june']
+days = ['all', 'm', 'tu', 'w', 'th', 'f', 'sa', 'su']
+
 def get_filters():
     """
     Asks user to specify a city, month, and day to analyze.
@@ -17,6 +21,19 @@ def get_filters():
     """
     print('Hello! Let\'s explore some US bikeshare data!')
     # get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
+
+    valid = True
+
+    while valid:
+        city = input('Do you want to analyze Chicago, New York City or Washington?\n').lower()
+        if city in cities:
+            valid = False
+            print(city)
+            break
+        else:
+            print('Invalid answer. Please try again.')
+
+
 
 
     # get user input for month (all, january, february, ... , june)
