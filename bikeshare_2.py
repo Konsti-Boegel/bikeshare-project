@@ -28,7 +28,6 @@ def get_filters():
         city = input('Do you want to analyze Chicago, New York City or Washington?\n').lower()
         if city in cities:
             valid = False
-            print(city)
             break
         else:
             print('Invalid answer. Please try again.')
@@ -41,12 +40,21 @@ def get_filters():
         month = input('Which month do you want to filter? All, January, February, March, April, May or June.\n').lower()
         if month in months:
             valid = False
-            print(month)
             break
         else:
             print('Invalid answer. Please try again.')
 
     # get user input for day of week (all, monday, tuesday, ... sunday)
+
+    valid = True
+
+    while valid:
+        day = input('Which day do you want to filter? All, M, Tu, W, Th, F, Sa or Su.\n').lower()
+        if day in days:
+            valid = False
+            break
+        else:
+            print('Invalid answer. Please try again.')
 
 
     print('-'*40)
