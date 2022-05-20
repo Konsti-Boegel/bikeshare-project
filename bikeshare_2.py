@@ -21,6 +21,7 @@ def get_filters():
         (str) day - name of the day of week to filter by, or "all" to apply no day filter
     """
     print('Hello! Let\'s explore some US bikeshare data!')
+
     # get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
 
     valid = True
@@ -77,25 +78,26 @@ def load_data(city, month, day):
     df = pd.read_csv(CITY_DATA[city])
 
     # Handle NaN Values
+
     df['Birth Year'] = df['Birth Year'].fillna(value=0)
-    print(df)
 
     # Convert Start Time and End Time to Date-type
+
     df['Start Time'] = pd.to_datetime(df['Start Time'])
     df['End Time'] = pd.to_datetime(df['End Time'])
 
     # Convert remaining Columns to fitting Data Types
+
     df = df.astype({'Trip Duration': int, 'Start Station': str, 'End Station': str, 'User Type': str, 'Gender': str, 'Birth Year': int})
-    print(df)
 
     # Extract Month and Weekday (Monday=0 ... Sunday=6) to separate columns
+
     df['month'] = df['Start Time'].dt.month
     df['day'] = df['Start Time'].dt.weekday
     df['hour'] = df['Start Time'].dt.hour
 
-    print(df)
-
     # Filter df for month
+
     if month == 'january':
         filter_month = df['month'] == 1
     elif month == 'february':
@@ -115,9 +117,9 @@ def load_data(city, month, day):
         print('Somethin went wrong: Month Filter')
 
     df = df[filter_month]
-    print(df)
 
     # Filter df for day of week
+
     if day == 'm':
         filter_day = df['day'] == 0
     elif day == 'tu':
@@ -139,7 +141,6 @@ def load_data(city, month, day):
         print('Somethin went wrong: Day Filter')
 
     df = df[filter_day]
-    print(df)
 
     return df
 
@@ -151,14 +152,17 @@ def time_stats(df):
     start_time = time.time()
 
     # display the most common month
+
     popular_month = df['month'].mode()[0]
     print('Most popular start month: ', popular_month)
 
     # display the most common day of week
+
     popular_day = df['day'].mode()[0]
     print('Most popular start day: ', popular_day)
 
     # display the most common start hour
+
     popular_hour = df['hour'].mode()[0]
     print('Most popular start hour: ', popular_hour)
 
@@ -173,14 +177,17 @@ def station_stats(df):
     start_time = time.time()
 
     # display most commonly used start station
+
     popular_start_station = df['Start Station'].mode()[0]
     print('Most popular start station: ', popular_start_station)
 
     # display most commonly used end station
+
     popular_end_station = df['End Station'].mode()[0]
     print('Most popular end station: ', popular_end_station)
 
     # display most frequent combination of start station and end station trip
+
     popular_station_comb = (df['Start Station'] + ' and ' + df['End Station']).mode()[0]
     print('Most popular start station and end station combination: ', popular_station_comb)
 
@@ -195,11 +202,13 @@ def trip_duration_stats(df):
     start_time = time.time()
 
     # display total travel time
+
     total_travel_time = df['Trip Duration'].sum(0)
     print('The total travel time is: ', total_travel_time, ' seconds')
 
     # display mean travel time
-    mean_travel_time = df['Trip Duration'].mean(0)
+
+    mean_travel_time = df['Trip Duration'].mean(0).round(2)
     print('The total travel time is: ', mean_travel_time, ' seconds')
 
     print("\nThis took %s seconds." % (time.time() - start_time))
@@ -213,14 +222,17 @@ def user_stats(df):
     start_time = time.time()
 
     # Display counts of user types
+
     user_types = df['User Type'].value_counts()
     print('User Types: \n', user_types, '\n')
 
     # Display counts of gender
+
     genders = df['Gender'].value_counts()
     print('Genders: \n', genders, '\n')
 
     # Display earliest, most recent, and most common year of birth
+    
     earliest_year = df['Birth Year'][df['Birth Year'] > 0].min(0)
     latest_year = df['Birth Year'].max(0)
     common_year = df['Birth Year'][df['Birth Year'] > 0].mode()[0]
