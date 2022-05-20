@@ -11,6 +11,8 @@ cities = ['chicago', 'new york city', 'washington']
 months = ['all', 'january', 'february', 'march', 'april', 'may', 'june']
 days = ['all', 'm', 'tu', 'w', 'th', 'f', 'sa', 'su']
 
+chosen_city = ''
+
 def get_filters():
     """
     Asks user to specify a city, month, and day to analyze.
@@ -58,6 +60,8 @@ def get_filters():
         else:
             print('Invalid answer. Please try again.')
 
+    global chosen_city
+    chosen_city = city
 
     print('-'*40)
     return city, month, day
@@ -79,7 +83,8 @@ def load_data(city, month, day):
 
     # Handle NaN Values
 
-    df['Birth Year'] = df['Birth Year'].fillna(value=0)
+    if city != 'washington':
+        df['Birth Year'] = df['Birth Year'].fillna(value=0)
 
     # Convert Start Time and End Time to Date-type
 
@@ -88,7 +93,10 @@ def load_data(city, month, day):
 
     # Convert remaining Columns to fitting Data Types
 
-    df = df.astype({'Trip Duration': int, 'Start Station': str, 'End Station': str, 'User Type': str, 'Gender': str, 'Birth Year': int})
+    if city != 'washington':
+        df = df.astype({'Trip Duration': int, 'Start Station': str, 'End Station': str, 'User Type': str, 'Gender': str, 'Birth Year': int})
+    else:
+        df = df.astype({'Trip Duration': int, 'Start Station': str, 'End Station': str, 'User Type': str})
 
     # Extract Month and Weekday (Monday=0 ... Sunday=6) to separate columns
 
@@ -112,7 +120,6 @@ def load_data(city, month, day):
         filter_month = df['month'] == 6
     elif month == 'all':
         filter_month = df['month'] >= 1
-        print('All was chosen')
     else:
         print('Somethin went wrong: Month Filter')
 
@@ -136,7 +143,6 @@ def load_data(city, month, day):
         filter_day = df['day'] == 6
     elif day == 'all':
         filter_day = df['day'] >= 0
-        print('All was chosen')
     else:
         print('Somethin went wrong: Day Filter')
 
@@ -151,15 +157,18 @@ def time_stats(df):
     print('\nCalculating The Most Frequent Times of Travel...\n')
     start_time = time.time()
 
+    temp_month = ['January', 'February', 'March', 'April', 'May', 'June']
+    temp_day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
     # display the most common month
 
     popular_month = df['month'].mode()[0]
-    print('Most popular start month: ', popular_month)
+    print('Most popular start month: ', temp_month[popular_month-1])
 
     # display the most common day of week
 
     popular_day = df['day'].mode()[0]
-    print('Most popular start day: ', popular_day)
+    print('Most popular start day: ', temp_day[popular_day])
 
     # display the most common start hour
 
@@ -224,19 +233,20 @@ def user_stats(df):
     # Display counts of user types
 
     user_types = df['User Type'].value_counts()
-    print('User Types: \n', user_types, '\n')
+    print('User Types:\n', user_types, '\n')
 
     # Display counts of gender
-
-    genders = df['Gender'].value_counts()
-    print('Genders: \n', genders, '\n')
+    if chosen_city != 'washington':
+        genders = df['Gender'].value_counts()
+        print('Genders:\n', genders, '\n')
 
     # Display earliest, most recent, and most common year of birth
-    
-    earliest_year = df['Birth Year'][df['Birth Year'] > 0].min(0)
-    latest_year = df['Birth Year'].max(0)
-    common_year = df['Birth Year'][df['Birth Year'] > 0].mode()[0]
-    print('The earliest birth year is: {}\nThe most recent birth year is: {}\nThe most common birth year is: {}'.format(earliest_year, latest_year, common_year))
+
+    if chosen_city != 'washington':
+        earliest_year = df['Birth Year'][df['Birth Year'] > 0].min(0)
+        latest_year = df['Birth Year'].max(0)
+        common_year = df['Birth Year'][df['Birth Year'] > 0].mode()[0]
+        print('The earliest birth year is: {}\nThe most recent birth year is: {}\nThe most common birth year is: {}'.format(earliest_year, latest_year, common_year))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
