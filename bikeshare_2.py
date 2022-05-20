@@ -100,6 +100,7 @@ def load_data(city, month, day):
     elif month == 'june':
         filter_month = df['month'] == 6
     elif month == 'all':
+        filter_month = df['month'] >= 1
         print('All was chosen')
     else:
         print('Somethin went wrong: Month Filter')
@@ -123,6 +124,7 @@ def load_data(city, month, day):
     elif day == 'su':
         filter_day = df['day'] == 6
     elif day == 'all':
+        filter_day = df['day'] >= 0
         print('All was chosen')
     else:
         print('Somethin went wrong: Day Filter')
@@ -139,13 +141,6 @@ def time_stats(df):
     print('\nCalculating The Most Frequent Times of Travel...\n')
     start_time = time.time()
 
-    # display the most common month
-
-
-    # display the most common day of week
-
-
-    # display the most common start hour
 
 
     print("\nThis took %s seconds." % (time.time() - start_time))
