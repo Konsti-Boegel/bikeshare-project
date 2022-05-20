@@ -73,6 +73,61 @@ def load_data(city, month, day):
         df - Pandas DataFrame containing city data filtered by month and day
     """
 
+    df = pd.read_csv(CITY_DATA[city])
+
+    # Convert Start Time and End Time to Date-type
+    df['Start Time'] = pd.to_datetime(df['Start Time'])
+    df['End Time'] = pd.to_datetime(df['End Time'])
+
+    # Extract Month and Weekday (Monday=0 ... Sunday=6) to separate columns
+    df['month'] = df['Start Time'].dt.month
+    df['day'] = df['Start Time'].dt.weekday
+
+    print(df)
+
+    # Filter df for month
+    if month == 'january':
+        filter_month = df['month'] == 1
+    elif month == 'february':
+        filter_month = df['month'] == 2
+    elif month == 'march':
+        filter_month = df['month'] == 3
+    elif month == 'april':
+        filter_month = df['month'] == 4
+    elif month == 'may':
+        filter_month = df['month'] == 5
+    elif month == 'june':
+        filter_month = df['month'] == 6
+    elif month == 'all':
+        print('All was chosen')
+    else:
+        print('Somethin went wrong: Month Filter')
+
+    df = df[filter_month]
+    print(df)
+
+    # Filter df for day of week
+    if day == 'm':
+        filter_day = df['day'] == 0
+    elif day == 'tu':
+        filter_day = df['day'] == 1
+    elif day == 'w':
+        filter_day = df['day'] == 2
+    elif day == 'th':
+        filter_day = df['day'] == 3
+    elif day == 'f':
+        filter_day = df['day'] == 4
+    elif day == 'sa':
+        filter_day = df['day'] == 5
+    elif day == 'su':
+        filter_day = df['day'] == 6
+    elif day == 'all':
+        print('All was chosen')
+    else:
+        print('Somethin went wrong: Day Filter')
+
+    df = df[filter_day]
+    print(df)
 
     return df
 
