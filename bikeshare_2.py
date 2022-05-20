@@ -1,6 +1,7 @@
 import time
 import pandas as pd
 import numpy as np
+import pprint
 
 CITY_DATA = { 'chicago': 'chicago.csv',
               'new york city': 'new_york_city.csv',
@@ -204,13 +205,18 @@ def user_stats(df):
     start_time = time.time()
 
     # Display counts of user types
-
+    user_types = df['User Type'].value_counts()
+    print('User Types: \n', user_types, '\n')
 
     # Display counts of gender
-
+    genders = df['Gender'].value_counts()
+    print('Genders: \n', genders, '\n')
 
     # Display earliest, most recent, and most common year of birth
-
+    earliest_year = df['Birth Year'].min(0)
+    latest_year = df['Birth Year'].max(0)
+    common_year = df['Birth Year'].mode()[0]
+    print('The earliest birth year is: {}\nThe most recent birth year is: {}\nThe most common birth year is: {}'.format(earliest_year, latest_year, common_year))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
