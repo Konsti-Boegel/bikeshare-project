@@ -262,6 +262,21 @@ def main():
         trip_duration_stats(df)
         user_stats(df)
 
+        keep_going = True
+
+        raw_input = input('\nWould you like to see the raw data? Enter yes or no.\n')
+        if raw_input.lower() == 'yes':
+            index = [0,5]
+            while keep_going:
+                print(df.iloc[index[0]:index[1]])
+                index[0] += 5
+                index[1] += 5
+
+                more = input('Do you want to see 5 more rows? Enter yes or no.\n')
+                if more.lower() != 'yes':
+                    keep_going = False
+                    break
+
         restart = input('\nWould you like to restart? Enter yes or no.\n')
         if restart.lower() != 'yes':
             break
@@ -269,3 +284,4 @@ def main():
 
 if __name__ == "__main__":
 	main()
+    
