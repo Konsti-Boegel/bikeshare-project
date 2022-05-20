@@ -82,6 +82,7 @@ def load_data(city, month, day):
     # Extract Month and Weekday (Monday=0 ... Sunday=6) to separate columns
     df['month'] = df['Start Time'].dt.month
     df['day'] = df['Start Time'].dt.weekday
+    df['hour'] = df['Start Time'].dt.hour
 
     print(df)
 
