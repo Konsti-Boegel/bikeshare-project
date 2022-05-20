@@ -76,9 +76,17 @@ def load_data(city, month, day):
 
     df = pd.read_csv(CITY_DATA[city])
 
+    # Handle NaN Values
+    df['Birth Year'] = df['Birth Year'].fillna(value=0)
+    print(df)
+
     # Convert Start Time and End Time to Date-type
     df['Start Time'] = pd.to_datetime(df['Start Time'])
     df['End Time'] = pd.to_datetime(df['End Time'])
+
+    # Convert remaining Columns to fitting Data Types
+    df = df.astype({'Trip Duration': int, 'Start Station': str, 'End Station': str, 'User Type': str, 'Gender': str, 'Birth Year': int})
+    print(df)
 
     # Extract Month and Weekday (Monday=0 ... Sunday=6) to separate columns
     df['month'] = df['Start Time'].dt.month
@@ -213,9 +221,9 @@ def user_stats(df):
     print('Genders: \n', genders, '\n')
 
     # Display earliest, most recent, and most common year of birth
-    earliest_year = df['Birth Year'].min(0)
+    earliest_year = df['Birth Year'][df['Birth Year'] > 0].min(0)
     latest_year = df['Birth Year'].max(0)
-    common_year = df['Birth Year'].mode()[0]
+    common_year = df['Birth Year'][df['Birth Year'] > 0].mode()[0]
     print('The earliest birth year is: {}\nThe most recent birth year is: {}\nThe most common birth year is: {}'.format(earliest_year, latest_year, common_year))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
